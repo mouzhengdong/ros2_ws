@@ -1,0 +1,46 @@
+{
+  "name": "ROS2 Humble Dev",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "HTTP_PROXY": "${localEnv:HTTP_PROXY}",
+      "HTTPS_PROXY": "${localEnv:HTTPS_PROXY}",
+      "NO_PROXY": "${localEnv:NO_PROXY}",
+      "ALL_PROXY": "${localEnv:ALL_PROXY}"
+    }
+  },
+  "runArgs": [
+    "--network=host",
+
+    // GUI 支持
+    "--env=DISPLAY=${localEnv:DISPLAY}",
+    "--env=XDG_RUNTIME_DIR=${localEnv:XDG_RUNTIME_DIR}",
+    "--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw",
+    "--env=QT_X11_NO_MITSHM=1",
+
+    // OpenGL 支持
+    "--device=/dev/dri",
+
+    // 权限支持
+    "--privileged",
+
+    // 网络代理
+    "--env=HTTP_PROXY=${localEnv:HTTP_PROXY}",
+    "--env=HTTPS_PROXY=${localEnv:HTTPS_PROXY}",
+    "--env=NO_PROXY=${localEnv:NO_PROXY}",
+    "--env=ALL_PROXY=${localEnv:ALL_PROXY}"
+  ],
+  "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-iot.vscode-ros",
+          "ms-python.python"
+        ],
+        "settings": {
+          "terminal.integrated.defaultProfile.linux": "bash"
+        }
+      }
+    },
+  "workspaceFolder": "/workspaces/ros2_ws",
+  "postCreateCommand": "echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc && echo \"alias colcon_rebuild='rm -rf build install log && colcon build --symlink-install && source install/setup.bash'\" >> ~/.bashrc"
+}
