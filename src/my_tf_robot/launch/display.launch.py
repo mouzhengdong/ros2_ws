@@ -2,18 +2,26 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
+import xacro
 
 
 def generate_launch_description():
-    urdf_path = os.path.join(
+    # urdf_path = os.path.join(
+    #     get_package_share_directory('my_tf_robot'),
+    #     'urdf',
+    #     'my_robot_xacro.urdf'
+    # )
+
+    # with open(urdf_path, 'r') as inf:
+    #     robot_desc = inf.read()
+
+    xacro_file = os.path.join(
         get_package_share_directory('my_tf_robot'),
         'urdf',
-        'my_robot.urdf'
+        'my_robot.xacro'
     )
-
-    with open(urdf_path, 'r') as inf:
-        robot_desc = inf.read()
-        
+    robot_description = xacro.process_file(xacro_file).toxml()
+    print(robot_description)
     return LaunchDescription([
         # 启动 robot_state_publisher 解析 URDF
         Node(
@@ -21,7 +29,7 @@ def generate_launch_description():
             executable='robot_state_publisher',
             name='robot_state_publisher',
             output='screen',
-            parameters=[{'use_sim_time': False},{'robot_description': robot_desc}],
+            parameters=[{'use_sim_time': False},{'robot_description': robot_description}],
             # arguments=[urdf_path]
         ),
         Node(
