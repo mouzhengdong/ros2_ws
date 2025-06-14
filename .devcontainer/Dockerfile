@@ -29,6 +29,14 @@ RUN apt-get update && apt-get install -y \
     # GUI 支持
     libgl1-mesa-glx libxrandr2 libxinerama1 libxcursor1 libxi6 \
     lsof \
+    ros-humble-slam-toolbox \
+    ros-humble-nav2-map-server \
+    ros-humble-turtlebot3* \
+    ros-humble-gazebo-ros-pkgs \
+    ros-humble-teleop-twist-keyboard \
+    mesa-utils \
+    ros-humble-joy \
+    ros-humble-teleop-twist-joy \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y locales && \
@@ -37,6 +45,12 @@ RUN apt-get update && apt-get install -y locales && \
 
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
+
+RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc && \
+    echo 'source /usr/share/gazebo/setup.sh' >> ~/.bashrc && \
+    echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/opt/ros/humble/share/turtlebot3_gazebo/models:/workspaces/ros2_ws/gazebo_models_worlds_collection/models' >> ~/.bashrc && \
+    echo 'export GAZEBO_RESOURCE_PATH=$GAZEBO_RESOURCE_PATH:/workspaces/ros2_ws/gazebo_models_worlds_collection/worlds' >> ~/.bashrc && \
+    echo "alias colcon_rebuild='rm -rf build install log && colcon build --symlink-install && source install/setup.bash'" >> ~/.bashrc
 
 # 默认进入 bash
 CMD ["bash"]

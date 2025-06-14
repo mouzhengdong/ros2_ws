@@ -1,13 +1,7 @@
 {
   "name": "ROS2 Humble Dev",
   "build": {
-    "dockerfile": "Dockerfile",
-    "args": {
-      "HTTP_PROXY": "${localEnv:HTTP_PROXY}",
-      "HTTPS_PROXY": "${localEnv:HTTPS_PROXY}",
-      "NO_PROXY": "${localEnv:NO_PROXY}",
-      "ALL_PROXY": "${localEnv:ALL_PROXY}"
-    }
+    "dockerfile": "Dockerfile"
   },
   "runArgs": [
     "--network=host",
@@ -20,8 +14,12 @@
 
     // GPU
     "--gpus=all",
+    "--runtime=nvidia",
+    "--env=NVIDIA_VISIBLE_DEVICES=all",
+    "--env=NVIDIA_DRIVER_CAPABILITIES=all",
     // OpenGL 支持
     "--device=/dev/dri",
+    "--device=/dev/input/js0",
 
     // 音频（PulseAudio）
     "--env=PULSE_SERVER=unix:${localEnv:XDG_RUNTIME_DIR}/pulse/native",
@@ -33,10 +31,10 @@
     "--privileged",
 
     // 网络代理
-    "--env=HTTP_PROXY=${localEnv:HTTP_PROXY}",
-    "--env=HTTPS_PROXY=${localEnv:HTTPS_PROXY}",
-    "--env=NO_PROXY=${localEnv:NO_PROXY}",
-    "--env=ALL_PROXY=${localEnv:ALL_PROXY}"
+    "--env=NO_PROXY=localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,172.29.0.0/16,::1",
+    "--env=HTTP_PROXY=http://127.0.0.1:7897",
+    "--env=HTTPS_PROXY=http://127.0.0.1:7897",
+    "--env=ALL_PROXY=socks5://127.0.0.1:7897"
   ],
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind",
@@ -47,14 +45,12 @@
         "extensions": [
           "ms-iot.vscode-ros",
           "ms-python.python",
-          "ms-vscode.cpptools-extension-pack",
-          "github.copilot"
+          "ms-vscode.cpptools-extension-pack"
         ],
         "settings": {
           "terminal.integrated.defaultProfile.linux": "bash"
         }
       }
   },
-  "workspaceFolder": "/workspaces/ros2_ws",
-  "postCreateCommand": "echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc && echo \"alias colcon_rebuild='rm -rf build install log && colcon build --symlink-install && source install/setup.bash'\" >> ~/.bashrc"
+  "workspaceFolder": "/workspaces/ros2_ws"
 }
