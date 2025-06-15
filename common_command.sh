@@ -1,5 +1,5 @@
 git remote set-url origin "ssh://git@ssh.github.com:443/mouzhengdong/ros2_ws.git" && ssh -T -p 443 git@ssh.github.com
-# 创建node
+# 创建编译node
 ros2 pkg create py_transform --build-type ament_python --dependencies rclpy geometry_msgs tf2_ros
 pkg create cpp_tf2_transform --build-type ament_cmake --dependencies rclcpp geometry_msgs tf2_ros
 rm -rf build install log && colcon build --symlink-install --packages-select my_diffbot && source install/setup.bash

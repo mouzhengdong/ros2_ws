@@ -1,7 +1,8 @@
 {
   "name": "ROS2 Humble Dev",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile",
+    "context": ".."
   },
   "runArgs": [
     "--network=host",
@@ -45,7 +46,9 @@
         "extensions": [
           "ms-iot.vscode-ros",
           "ms-python.python",
-          "ms-vscode.cpptools-extension-pack"
+          "ms-vscode.cpptools-extension-pack",
+          "ms-vscode.cmake-tools",
+          "goessner.mdmath"
         ],
         "settings": {
           "terminal.integrated.defaultProfile.linux": "bash"

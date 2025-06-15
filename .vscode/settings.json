@@ -102,7 +102,9 @@
       "typeinfo": "cpp",
       "valarray": "cpp",
       "variant": "cpp",
-      "*.txx": "cpp"
+      "*.txx": "cpp",
+      "core": "cpp",
+      "svd": "cpp"
     },
     "cmake.sourceDirectory": "/workspaces/ros2_ws/src/cpp_action_example"
 }

@@ -1,7 +1,5 @@
 build/
 install/
 log/
-gazebo_models_worlds_collection/
-src/slam_toolbox/
-src/turtlebot3/
+third_party/
 .DS_Store
